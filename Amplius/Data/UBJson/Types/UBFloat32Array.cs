@@ -1,4 +1,8 @@
-﻿/// <info>
+﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+/// <info>
 /// All code below is derived—at least somewhat—from https://github.com/dinocore1/ubjson.
 /// 
 /// Their projects license can be found here: https://github.com/dinocore1/ubjson/blob/master/LICENSE.txt;
@@ -27,14 +31,17 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-
 namespace Amplius.Data.UBJson
 {
     public sealed class UBFloat32Array : UBArray
     {
         private float[] array;
 
-        public UBFloat32Array(float[] array) : base(null) => this.array = array;
+        public UBFloat32Array(float[] array) : base(null)
+        {
+            this.array = array;
+            value = array.As(i => CreateValue(i)).ToArray();
+        }
 
         public override bool IsStronglyTyped() => true;
         public override UBArrayType GetArrayType => UBArrayType.FLOAT32;
@@ -45,5 +52,14 @@ namespace Amplius.Data.UBJson
         public new float[] GetValue() => array;
         public override string ToString() => value.ToString();
         public override int GetHashCode() => value.GetHashCode();
+    }
+
+    public static class Test
+    {
+        public static IEnumerable<R> As<T, R>(this IEnumerable<T> self, Func<T, R> asFunc)
+        {
+            foreach (var item in self)
+                yield return asFunc.Invoke(item);
+        }
     }
 }

@@ -40,13 +40,24 @@ namespace Amplius.Data.UBJson
         public UBArray() : base(null) { }
         public UBArray(UBValue[] value) : base(value) { }
 
+        /// <summary>
+        /// Returns whether or not the array is strongly typed; i.e. has a static type.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool IsStronglyTyped() => false;
+        /// <summary>
+        /// Returns the array type.
+        /// </summary>
         public virtual UBArrayType GetArrayType => UBArrayType.GENERIC;
 
+        /// <summary>
+        /// Returns a value at the <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">Index pointer</param>
         public virtual UBValue Get(int index) => value[index];
 
         public override UBType GetUBType => UBType.ARRAY;
-        public override sealed UBValue[] GetValue() => value;
+        public override UBValue[] GetValue() => value;
         public override string ToString() => value.ToString();
         public override int GetHashCode()
         {

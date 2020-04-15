@@ -1,4 +1,6 @@
-﻿/// <info>
+﻿
+using System.Linq;
+/// <info>
 /// All code below is derived—at least somewhat—from https://github.com/dinocore1/ubjson.
 /// 
 /// Their projects license can be found here: https://github.com/dinocore1/ubjson/blob/master/LICENSE.txt;
@@ -27,14 +29,17 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-
 namespace Amplius.Data.UBJson
 {
     public sealed class UBStringArray : UBArray
     {
         private string[] array;
 
-        public UBStringArray(string[] array) : base(null) => this.array = array;
+        public UBStringArray(string[] array) : base(null)
+        {
+            this.array = array;
+            value = array.As(i => CreateValue(i)).ToArray();
+        }
 
         public override bool IsStronglyTyped() => true;
         public override UBArrayType GetArrayType => UBArrayType.STRING;
