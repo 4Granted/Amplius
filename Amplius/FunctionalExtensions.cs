@@ -74,8 +74,24 @@ namespace Amplius
         /// <returns>Returns the result of the <c>Func</c></returns>
         public static R Run<T, R>(this T _, Func<R> callback) => callback.Invoke();
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="expected"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         public static T Do<T>(this T self, T expected, Action<T> callback) => self.Also(_ => { if (self.Equals(expected)) callback.Invoke(self); });
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="condition"></param>
+        /// <param name="callback"></param>
+        /// <returns></returns>
         public static T DoIf<T>(this T self, Func<T, bool> condition, Action<T> callback) => self.Also(_ => { if (condition.Invoke(self)) callback.Invoke(self); });
     }
 }

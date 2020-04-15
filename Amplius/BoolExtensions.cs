@@ -3,7 +3,7 @@
 namespace Amplius
 {
     /// <summary>
-    /// Useful <c>bool</c> extensions.
+    /// Useful <see cref="bool"/> extensions.
     /// </summary>
     public static class BoolExtensions
     {

@@ -3,7 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Amplius
 {
-    public sealed class Version : IComparable<Version>
+    /// <summary>
+    /// A wrapper around a major, minor, patch and extra (snapshot, etc) data.
+    /// </summary>
+    public sealed class Version : IComparable<Version>, ICloneable
     {
         public int Major => major;
         public int Minor => minor;
@@ -15,7 +18,7 @@ namespace Amplius
         private int patch;
         private string extra;
 
-        private string label => extra != "" ? "-$extra" : "";
+        private string label => extra != "" ? $"-{extra}" : "";
 
         public Version(int major, int minor, int patch, string extra)
         {
@@ -25,6 +28,32 @@ namespace Amplius
             this.extra = extra;
         }
 
+        public override bool Equals(object other) => 
+            other is Version
+            && major == ((Version)other).major
+            && minor == ((Version)other).minor
+            && patch == ((Version)other).patch
+            && extra == ((Version)other).extra;
+        public override int GetHashCode() => major * (minor + (patch * extra.GetHashCode())).GetHashCode();
+        public override string ToString() => $"{major}.{minor}.{patch}{label}";
+
+        public int CompareTo([AllowNull] Version other)
+        {
+            if (major > other.major) return 1;
+            else if (major < other.major) return -1;
+            else if (major == other.major && minor > other.minor) return 1;
+            else if (major == other.major && minor < other.minor) return -1;
+            else if (major == other.major && minor == other.minor && patch > other.patch) return 1;
+            else if (major == other.major && minor == other.minor && patch < other.patch) return -1;
+            else return 0;
+        }
+        public object Clone() => new Version(major, minor, patch, extra);
+
+        /// <summary>
+        /// Creates a <see cref="Version"/> object from the <paramref name="versionString"/>.
+        /// </summary>
+        /// <param name="versionString"></param>
+        /// <returns></returns>
         public static Version FromString(string versionString)
         {
             string[] data = versionString.Split('.', '-');
@@ -44,30 +73,15 @@ namespace Amplius
             return version;
         }
 
-        public override bool Equals(object other) => other is Version
-            && major == ((Version)other).major
-            && minor == ((Version)other).minor
-            && patch == ((Version)other).patch
-            && extra == ((Version)other).extra;
-
-        public override int GetHashCode() => major * (minor + patch).GetHashCode() + extra.GetHashCode();
-
-        public override string ToString() => $"{major}.{minor}.{patch}{label}";
-
-        public int CompareTo([AllowNull] Version other)
-        {
-            if (major > other.major) return 1;
-            else if (major < other.major) return -1;
-            else if (major == other.major && minor > other.minor) return 1;
-            else if (major == other.major && minor < other.minor) return -1;
-            else if (major == other.major && minor == other.minor && patch > other.patch) return 1;
-            else if (major == other.major && minor == other.minor && patch < other.patch) return -1;
-            else return 0;
-        }
+        public static implicit operator Version(string versionString) => FromString(versionString);
+        public static explicit operator string(Version version) => version.ToString();
     }
 
+    /// <summary>
+    /// A simplistic exception for invalid version strings.
+    /// </summary>
     public sealed class InvalidVersionString : Exception
     {
-        public InvalidVersionString(string attempted) : base($"Inpublic static readonly QColorid string: Cannot convert {attempted} to a version.") { }
+        public InvalidVersionString(string attempted) : base($"Invalid string: Cannot convert {attempted} to a version.") { }
     }
 }
