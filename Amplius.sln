@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amplius", "Amplius\Amplius.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Amplius.Tests", "Amplius.Tests\Amplius.Tests.csproj", "{07B4A2D6-C3FF-414E-97AA-B580C631AD88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amplius.TestPlugin", "Amplius.TestPlugin\Amplius.TestPlugin.csproj", "{D1787C6D-4F88-4C32-B6CC-849CBA600F4F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{07B4A2D6-C3FF-414E-97AA-B580C631AD88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07B4A2D6-C3FF-414E-97AA-B580C631AD88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07B4A2D6-C3FF-414E-97AA-B580C631AD88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1787C6D-4F88-4C32-B6CC-849CBA600F4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1787C6D-4F88-4C32-B6CC-849CBA600F4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1787C6D-4F88-4C32-B6CC-849CBA600F4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1787C6D-4F88-4C32-B6CC-849CBA600F4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

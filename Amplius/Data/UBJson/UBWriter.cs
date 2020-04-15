@@ -84,12 +84,12 @@ namespace Amplius.Data.UBJson
         /// Writes a <c><see cref="IUBSerializable"/></c> object to the stream.
         /// </summary>
         /// <param name="serializable">Object to serialize</param>
-        public void Write(IUBSerializable serializable, UBObject provider = null) => Write(serializable.Write(provider == null ? UBValue.CreateObject() : provider));
+        public void Write(IUBSerializable serializable, UBObject provider = null) => Write(serializable.Serialize(provider == null ? UBValue.CreateObject() : provider));
         /// <summary>
         /// Writes a <c><see cref="UBSerializable"/></c> object to the stream.
         /// </summary>
         /// <param name="serializable"></param>
-        public void Write(UBSerializable serializable) => Write(serializable.Write());
+        public void Write(UBSerializable serializable) => Write(serializable.Serialize());
         /// <summary>
         /// Writes the <paramref name="obj"/> as a <c>UBObject</c> to the stream.
         /// </summary>
