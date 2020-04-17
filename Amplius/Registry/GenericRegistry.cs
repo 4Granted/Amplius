@@ -24,5 +24,9 @@
 
 namespace Amplius.Registry
 {
+    /// <summary>
+    /// Defines a generic <see cref="Registry{K, V}"/>; uses a string for the key and <typeparamref name="V"/> as the value type.
+    /// </summary>
+    /// <typeparam name="V">Type to register</typeparam>
     public sealed class GenericRegistry<V> : Registry<string, V> { }
 }

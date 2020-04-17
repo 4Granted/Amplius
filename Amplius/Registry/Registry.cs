@@ -27,6 +27,12 @@ using System.Collections.Generic;
 
 namespace Amplius.Registry
 {
+    /// <summary>
+    /// Uses a <typeparamref name="K"/> as the key and <typeparamref name="V"/> as the value type.
+    /// 
+    /// <para>Perfect for external and internal registration of types; specifically for a modding API.</para>
+    /// </summary>
+    /// <typeparam name="V">Type to register</typeparam>
     public abstract class Registry<K, V> : IEnumerable<KeyValuePair<K, V>>
     {
         public IEnumerable<K> Keys => entries.Keys as ICollection<K>;

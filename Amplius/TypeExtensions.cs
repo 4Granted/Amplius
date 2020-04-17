@@ -32,6 +32,19 @@ namespace Amplius
     /// </summary>
     public static class TypeExtensions
     {
+#nullable enable
+        public static T? Or<T>(this T? self, T? other) where T : class
+        {
+            if (self is string && other is string)
+                return (self as string) != "" ? self : other;
+
+            if (self != null)
+                return self;
+            else
+                return other;
+        }
+#nullable restore
+
         /* Misc type-to-type conversion extensions */
         public static FileStream ToFile(this Uri uri) => uri.AbsolutePath.ToFile();
     }
