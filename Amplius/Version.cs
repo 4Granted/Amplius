@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Amplius.Data.UBJson;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 /// <license>
@@ -30,7 +31,7 @@ namespace Amplius
     /// <summary>
     /// A wrapper around a major, minor, patch and extra (snapshot, etc) data.
     /// </summary>
-    public sealed class Version : IComparable<Version>, ICloneable
+    public sealed class Version : IComparable<Version>, ICloneable, IUBSerializable
     {
         public int Major => major;
         public int Minor => minor;
@@ -43,6 +44,7 @@ namespace Amplius
         private string extra;
 
         private string label => extra != "" ? $"-{extra}" : "";
+        private string ver => $"{major}.{minor}.{patch}{label}";
 
         public Version(int major, int minor, int patch, string extra)
         {
@@ -59,7 +61,7 @@ namespace Amplius
             && patch == ((Version)other).patch
             && extra == ((Version)other).extra;
         public override int GetHashCode() => major * (minor + (patch * extra.GetHashCode())).GetHashCode();
-        public override string ToString() => $"{major}.{minor}.{patch}{label}";
+        public override string ToString() => ver;
 
         public int CompareTo([AllowNull] Version other)
         {
@@ -95,6 +97,22 @@ namespace Amplius
             catch (Exception) { throw new InvalidVersionString(versionString); }
 
             return version;
+        }
+
+        public UBObject Serialize(UBObject ub)
+        {
+            ub.SetString("version", label);
+
+            return ub;
+        }
+        public void Deserialize(UBObject ub)
+        {
+            Version newVer = ub.GetString("string");
+
+            major = newVer.major;
+            minor = newVer.minor;
+            patch = newVer.patch;
+            extra = newVer.extra;
         }
 
         public static implicit operator Version(string versionString) => FromString(versionString);

@@ -582,7 +582,7 @@ namespace Amplius.Data.UBJson
 
             while (bytesLeft > 0)
             {
-                int bytesRead = fs.Read(buf, 0, (int)Math.Min(buf.Length, bytesLeft));
+                int bytesRead = fs.Read(buf, 0, (int)System.Math.Min(buf.Length, bytesLeft));
 
                 if (bytesRead < 0)
                     throw new IOException("input stream too short");
@@ -608,7 +608,7 @@ namespace Amplius.Data.UBJson
 
             while (bytesLeft > 0)
             {
-                int bytesRead = await fs.ReadAsync(buf, 0, (int)Math.Min(buf.Length, bytesLeft));
+                int bytesRead = await fs.ReadAsync(buf, 0, (int)System.Math.Min(buf.Length, bytesLeft));
 
                 if (bytesRead < 0)
                     throw new IOException("input stream too short");

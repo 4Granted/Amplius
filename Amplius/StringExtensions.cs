@@ -32,6 +32,12 @@ namespace Amplius
     /// </summary>
     public static class StringExtensions
     {
+        public static string Slice(this string self, int start, int end)
+        {
+            if (end < 0) end = self.Length + end;
+            int len = end - start;
+            return self.Substring(start, len);
+        }
         public static string ReplaceAll(this string self, string replacement, params string[] strings)
         {
             var str = self;

@@ -73,7 +73,7 @@ namespace Amplius.Data.UBJson
             int length = Length;
             int otherLength = other.Length;
 
-            int minSize = Math.Min(length, otherLength);
+            int minSize = System.Math.Min(length, otherLength);
 
             for (int i = 0; i < minSize; i++)
             {

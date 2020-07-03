@@ -64,7 +64,7 @@ namespace Amplius.Data.UBJson
 
             while (bytesLeft > 0)
             {
-                int bytesRead = stream.Read(buffer, 0, (int)Math.Min(buffer.Length, bytesLeft));
+                int bytesRead = stream.Read(buffer, 0, (int)System.Math.Min(buffer.Length, bytesLeft));
 
                 if (bytesRead < 0)
                     throw new Exception("Stream was too short to read from.");
