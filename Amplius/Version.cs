@@ -107,7 +107,7 @@ namespace Amplius
         }
         public void Deserialize(UBObject ub)
         {
-            Version newVer = ub.GetString("string");
+            Version newVer = ub.GetString("version");
 
             major = newVer.major;
             minor = newVer.minor;

@@ -85,7 +85,8 @@ namespace Amplius.Data.Properties
                     {
                         var span = new TextSpan(start, 1);
                         var loc = new TextLocation(input, span);
-                        Console.WriteLine("Bad token or character");
+
+                        Error("Bad token or character", loc);
                         position++;
                     }
                     break;
@@ -142,7 +143,8 @@ namespace Amplius.Data.Properties
                     case '\n':
                         var span = new TextSpan(start, 1);
                         var loc = new TextLocation(input, span);
-                        Console.WriteLine("Unterminated string");
+
+                        Error("Unterminated string", loc);
                         done = true;
                         break;
                     case '"':
@@ -184,7 +186,8 @@ namespace Amplius.Data.Properties
             {
                 var span = new TextSpan(start, position);
                 var loc = new TextLocation(input, span);
-                Console.WriteLine("Invalid number");
+
+                Error("Invalid number", loc);
             }
 
             value = val;
@@ -262,5 +265,7 @@ namespace Amplius.Data.Properties
                     return TokenType.IDENTIFIER;
             }
         }
+
+        private void Error(string message, TextLocation location) => Console.WriteLine($"Properties: Lexer Error - {{Message: {message}, Location: {location.Span.ToString()}}}");
     }
 }

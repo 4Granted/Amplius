@@ -2,6 +2,8 @@
 {
     /// <summary>
     /// Proposed <see cref="Wrapper{T}"/> struct; used to contain data of type <typeparamref name="T"/>.
+    /// 
+    /// <para>A genericized struct for wrapping values in objects.</para>
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [Experimental]
