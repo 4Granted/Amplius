@@ -1,8 +1,7 @@
-﻿using Amplius.Data.Properties;
-using Amplius.Utils.LexicalAnalysis;
+﻿using Amplius.Commands;
+using Amplius.Logging;
+using Amplius.Utils;
 using System;
-using System.Collections.Generic;
-
 
 /// <license>
 /// MIT License
@@ -30,18 +29,27 @@ using System.Collections.Generic;
 
 namespace Amplius.Tests
 {
+#nullable enable
     /*
      * Will convert this into a proper unit test suite.
      * 
      * For now, I'll be using this as a more REPL/interactive based testing suite.
      */
-    internal sealed class Program
+    internal sealed class Program : ICommandSource
     {
-        internal static void Main(string[] args) => new Program(args).Also(_ => Console.ReadLine());
+        internal static readonly Logger LOGGER = new Logger(Namespace.Amplius_Tests.From("tests"), Console.Out);
+        internal static void Main(string[] args) => new Program(args);
 
         private Program(string[] args)
         {
-
+            while (true)
+            {
+                TestCommandsBleeding.Write("> ", ConsoleColor.White);
+                var line = Console.ReadLine();
+                TestCommandsBleeding.Dispatch(this, line);
+            }
         }
+
+        public string? GetName() => GetType().Name;
     }
 }

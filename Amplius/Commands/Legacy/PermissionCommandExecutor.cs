@@ -1,4 +1,8 @@
-﻿/// <license>
+﻿using Amplius.Commands.Legacy;
+using Amplius.Permissions;
+using System;
+
+/// <license>
 /// MIT License
 /// 
 /// Copyright(c) 2020 RuthlessBoi
@@ -21,11 +25,24 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+
+namespace Amplius.Tests
 {
-    /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
-    /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+    public sealed class PermissionCommandExecutor : ICommandExecutor
+    {
+        public bool Execute(Command command)
+        {
+            var source = command.Source;
+            var representation = command.Representation;
+
+            if (source != null && source is IPermissible iph && representation is IPermissionValidator ipc)
+            {
+                if (ipc.IsPermitted(iph))
+                    return command.Execute();
+            }
+
+            Console.WriteLine("You do not have the correct permissions to execute this command");
+            return false;
+        }
+    }
 }

@@ -36,16 +36,15 @@ namespace Amplius.Events
     {
         public static readonly EventBus DEFAULT = new EventBus();
 
-        internal Dictionary<Type, object> Instances => instances;
+        internal Dictionary<Type, object> Instances { get; }
 
         private readonly List<Type> listeners;
-        private readonly Dictionary<Type, object> instances;
         private readonly Dictionary<Type, List<EventWrapper>> events;
 
         public EventBus()
         {
             listeners = new List<Type>();
-            instances = new Dictionary<Type, object>();
+            Instances = new Dictionary<Type, object>();
             events = new Dictionary<Type, List<EventWrapper>>();
         }
 
@@ -71,7 +70,7 @@ namespace Amplius.Events
             }
 
             listeners.Add(listener.GetType());
-            instances.Add(listener.GetType(), listener);
+            Instances.Add(listener.GetType(), listener);
         }
 
         /// <summary>

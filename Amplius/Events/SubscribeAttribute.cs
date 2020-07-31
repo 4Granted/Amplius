@@ -33,10 +33,8 @@ namespace Amplius.Events
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class SubscribeAttribute : Attribute 
     {
-        public Type Type => type;
+        public Type Type { get; }
 
-        private Type type;
-
-        public SubscribeAttribute(Type type) => this.type = type;
+        public SubscribeAttribute(Type type) => Type = type;
     }
 }

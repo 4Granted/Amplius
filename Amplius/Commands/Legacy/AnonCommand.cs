@@ -21,11 +21,17 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+
+namespace Amplius.Commands.Legacy
 {
-    /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
-    /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+#nullable enable
+    public sealed class AnonCommand : CommandRepresentation
+    {
+        public delegate bool Callback(Command? command);
+        private readonly Callback callback;
+
+        public AnonCommand(string name, Callback callback) : base(name) => this.callback = callback;
+
+        public override bool Execute(Command? command) => callback?.Invoke(command) ?? false;
+    }
 }

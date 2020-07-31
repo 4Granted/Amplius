@@ -28,6 +28,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Amplius
 {
+#nullable enable
     /// <summary>
     /// A wrapper around a major, minor, patch and extra (snapshot, etc) data.
     /// </summary>
@@ -36,17 +37,17 @@ namespace Amplius
         public int Major => major;
         public int Minor => minor;
         public int Patch => patch;
-        public string Extra => extra;
+        public string? Extra => extra;
 
         private int major;
         private int minor;
         private int patch;
-        private string extra;
+        private string? extra;
 
         private string label => extra != "" ? $"-{extra}" : "";
         private string ver => $"{major}.{minor}.{patch}{label}";
 
-        public Version(int major, int minor, int patch, string extra)
+        public Version(int major, int minor, int patch, string? extra = "")
         {
             this.major = major;
             this.minor = minor;
@@ -54,13 +55,14 @@ namespace Amplius
             this.extra = extra;
         }
 
-        public override bool Equals(object other) => 
-            other is Version
-            && major == ((Version)other).major
-            && minor == ((Version)other).minor
-            && patch == ((Version)other).patch
-            && extra == ((Version)other).extra;
-        public override int GetHashCode() => major * (minor + (patch * extra.GetHashCode())).GetHashCode();
+        public override bool Equals(object? other) => 
+            other != null
+            && other is Version ver
+            && major == ver.major
+            && minor == ver.minor
+            && patch == ver.patch
+            && ((extra != null && ver.extra != null) ? extra == ver.extra : true);
+        public override int GetHashCode() => major * (minor + (patch * extra?.GetHashCode())).GetHashCode();
         public override string ToString() => ver;
 
         public int CompareTo([AllowNull] Version other)

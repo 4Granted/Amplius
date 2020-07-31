@@ -1,4 +1,7 @@
-﻿/// <license>
+﻿using Amplius.Commands.Legacy;
+using Amplius.Permissions;
+
+/// <license>
 /// MIT License
 /// 
 /// Copyright(c) 2020 RuthlessBoi
@@ -21,11 +24,16 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+
+namespace Amplius.Tests
 {
-    /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
-    /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+    public sealed class AnonPermissionCommand : PermissionCommand
+    {
+        public delegate bool Callback(Command? command);
+        private readonly Callback callback;
+
+        public AnonPermissionCommand(string name, Callback callback, Permission? permission = null) : base(name, permission) => this.callback = callback;
+
+        public override bool Execute(Command? command) => callback?.Invoke(command) ?? false;
+    }
 }

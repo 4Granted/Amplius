@@ -21,11 +21,19 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+
+namespace Amplius.Permissions
 {
     /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
+    /// Represents an object which validates an objects' <see cref="Permission"/>'s or authority
     /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+    public interface IPermissionValidator
+    {
+        /// <summary>
+        /// Validates a <see cref="IPermissible"/> authority
+        /// </summary>
+        /// <param name="holder">Holder to validate</param>
+        /// <returns>Returns a <see cref="bool"/> defining the outcome</returns>
+        public bool IsPermitted(IPermissible holder);
+    }
 }

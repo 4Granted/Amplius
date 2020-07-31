@@ -1,4 +1,6 @@
-﻿/// <license>
+﻿using System.Collections.Immutable;
+
+/// <license>
 /// MIT License
 /// 
 /// Copyright(c) 2020 RuthlessBoi
@@ -21,11 +23,29 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+
+namespace Amplius.Commands.Legacy
 {
-    /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
-    /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+#nullable enable
+    public class DefaultCommandDispatcher : ICommandDispatcher
+    {
+        private readonly ImmutableArray<CommandRepresentation> commands;
+
+        public DefaultCommandDispatcher(params CommandRepresentation[] commands) => this.commands = ImmutableArray.Create(commands);
+
+        public bool Dispatch(ICommandExecutor executor, ICommandSource? source, string input, IInputDissector? dissector = null) => executor.Execute(new Command(this, executor, source, input, dissector));
+
+        public CommandRepresentation? FindRepresentation(string label)
+        {
+            foreach (var command in commands)
+            {
+                if (command.Name == label)
+                {
+                    return command;
+                }
+            }
+
+            return null;
+        }
+    }
 }

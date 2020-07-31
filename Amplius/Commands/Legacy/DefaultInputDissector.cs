@@ -1,4 +1,6 @@
-﻿/// <license>
+﻿using System.Linq;
+
+/// <license>
 /// MIT License
 /// 
 /// Copyright(c) 2020 RuthlessBoi
@@ -21,11 +23,19 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+
+namespace Amplius.Commands.Legacy
 {
-    /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
-    /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+    public class DefaultInputDissector : IInputDissector
+    {
+        public (string label, string[] args) Dissect(string raw)
+        {
+            var split = raw.Split(" ");
+
+            var label = split[0];
+            var args = split.Skip(1).ToArray() ?? new string[] { };
+
+            return (label, args);
+        }
+    }
 }

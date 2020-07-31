@@ -37,6 +37,9 @@ namespace Amplius.Data
         private readonly UBObject obj;
         private const string path = "$preferences";
 
+        /// <summary>
+        /// Initializes the default preferences instance
+        /// </summary>
         public static void Initialize() => Default = new Preferences();
 
         private Preferences()

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 /// <license>
 /// MIT License
@@ -35,11 +36,21 @@ namespace Amplius.Registry
     /// <typeparam name="V">Type to register</typeparam>
     public abstract class Registry<K, V> : IEnumerable<KeyValuePair<K, V>>
     {
+        public static readonly Registry<K, V> Empty = new Generic();
+
+        public delegate K KeyFactory(V value);
+        public delegate KeyValuePair<K, V> ConversionFactory<OK, OV>(KeyValuePair<OK, OV> pair);
+        public sealed class Generic : Registry<K, V> { }
+
         public IEnumerable<K> Keys => entries.Keys as ICollection<K>;
         public IEnumerable<V> Values => entries.Values as ICollection<V>;
         public IEnumerable<KeyValuePair<K, V>> Pairs => entries as ICollection<KeyValuePair<K, V>>;
 
-        protected readonly Dictionary<K, V> entries = new Dictionary<K, V>();
+        protected readonly Dictionary<K, V> entries;
+
+        public Registry() : this(new Dictionary<K, V>()) { }
+        public Registry(IEnumerable<KeyValuePair<K, V>> entries) : this(new Dictionary<K, V>(entries)) { }
+        public Registry(Dictionary<K, V> entries) => this.entries = entries;
 
         public virtual bool Add(K key, V value)
         {
@@ -62,5 +73,39 @@ namespace Amplius.Registry
 
         public IEnumerator<KeyValuePair<K, V>> GetEnumerator() => Pairs.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public Dictionary<K, V> AsDictionary() => entries;
+
+        public static Registry<K, V> From(IEnumerable<V> source, KeyFactory factory)
+        {
+            var registry = new Generic();
+
+            foreach (var value in source)
+                registry.Add(factory(value), value);
+
+            return registry;
+        }
+        public static Registry<K, V> From<OK, OV>(IEnumerable<KeyValuePair<OK, OV>> source, ConversionFactory<OK, OV> factory)
+        {
+            var registry = new Generic();
+
+            foreach (var pair in source)
+            {
+                var newPair = factory(pair);
+
+                registry.Add(newPair.Key, newPair.Value);
+            }
+
+            return registry;
+        }
+        public static Registry<K, V> From(IEnumerable<KeyValuePair<K, V>> source)
+        {
+            var registry = new Generic();
+
+            foreach (var pair in source)
+                registry.Add(pair.Key, pair.Value);
+
+            return registry;
+        }
     }
 }

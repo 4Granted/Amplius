@@ -21,11 +21,27 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+
+namespace Amplius.Utils
 {
     /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
+    /// A namespace represents <see cref="NamespaceKey"/>'s by a global key
     /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+    public sealed class Namespace
+    {
+        public static readonly Namespace Amplius = new Namespace("amplius");
+        public static readonly Namespace Amplius_Tests = new Namespace("amplius.tests");
+        public static readonly Namespace Default = new Namespace("global");
+
+        public string Name { get; }
+
+        public Namespace(string name) => Name = name;
+
+        /// <summary>
+        /// Creates a <see cref="NamespaceKey"/> of <paramref name="key"/> under the parent <see cref="Namespace"/>
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public NamespaceKey From(string key) => new NamespaceKey(this, key);
+    }
 }

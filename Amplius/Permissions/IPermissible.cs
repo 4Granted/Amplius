@@ -1,4 +1,6 @@
-﻿/// <license>
+﻿using System.Collections.Immutable;
+
+/// <license>
 /// MIT License
 /// 
 /// Copyright(c) 2020 RuthlessBoi
@@ -21,11 +23,29 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+
+namespace Amplius.Permissions
 {
     /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
+    /// Represents an object that holds <see cref="Permission"/> data
     /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+    public interface IPermissible
+    {
+        /// <summary>
+        /// Adds a <see cref="Permission"/> to the <see cref="IPermissible"/>
+        /// </summary>
+        /// <param name="permission"><see cref="Permission"/> to add</param>
+        public void AddPermission(Permission permission);
+        /// <summary>
+        /// Removes a <see cref="Permission"/> to the <see cref="IPermissible"/>
+        /// </summary>
+        /// <param name="permission"><see cref="Permission"/> to remove</param>
+        public void RemovePermission(Permission permission);
+
+        /// <summary>
+        /// Gets all <see cref="Permission"/>'s held by the <see cref="IPermissible"/>
+        /// </summary>
+        /// <returns>Returns all held <see cref="Permission"/>'s</returns>
+        public ImmutableArray<Permission> GetPermissions();
+    }
 }

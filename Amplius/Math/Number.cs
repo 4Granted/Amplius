@@ -26,6 +26,9 @@
 
 namespace Amplius.Math
 {
+    /// <summary>
+    /// A struct which represents a unified storage of all numeric data types
+    /// </summary>
     public struct Number
     {
         private readonly object data;

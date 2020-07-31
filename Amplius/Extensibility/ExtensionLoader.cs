@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Immutable;
 
 /// <license>
 /// MIT License
@@ -41,13 +42,13 @@ namespace Amplius.Extensibility
         public readonly Type ExtensionType = typeof(T);
         private readonly string Prefix = $"ExtensionLoader<{typeof(T).Name}>";
 
-        public List<T> Extensions => extensions;
+        public ImmutableArray<T> Extensions => extensions.ToImmutable();
 
-        private List<T> extensions;
+        private ImmutableArray<T>.Builder extensions;
 
-        public ExtensionLoader() => extensions = new List<T>();
+        public ExtensionLoader() => extensions = ImmutableArray.CreateBuilder<T>();
 
-        public IEnumerable<T> LoadFrom(string path)
+        public ImmutableArray<T> LoadFrom(string path)
         {
             if (!Directory.Exists(path))
                 throw new Exception($"{Prefix} error: Non existent directory '{path}'.");
@@ -75,7 +76,7 @@ namespace Amplius.Extensibility
 
             extensions.AddRange(tempExtensions);
 
-            return extensions;
+            return extensions.ToImmutable();
         }
     }
 }

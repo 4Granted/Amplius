@@ -1,4 +1,6 @@
-﻿/// <license>
+﻿using System.Collections;
+using System.Collections.Generic;
+/// <license>
 /// MIT License
 /// 
 /// Copyright(c) 2020 RuthlessBoi
@@ -21,11 +23,16 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 /// SOFTWARE.
 /// </license>
-namespace Amplius.Registry
+namespace Amplius.Collections
 {
-    /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
-    /// </summary>
-    /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+    public interface IPagedList : IEnumerable
+    {
+        public IEnumerable GetPage(int page, int pageSize = 10);
+        public int GetTotalPages(int pageSize = 10);
+    }
+
+    public interface IPagedList<T> : IEnumerable<T>, IPagedList
+    {
+        public new IEnumerable<T> GetPage(int page, int pageSize = 10);
+    }
 }

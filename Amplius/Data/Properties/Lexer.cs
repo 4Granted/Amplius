@@ -1,4 +1,4 @@
-﻿using Amplius.Utils;
+﻿using Amplius.Utils.Text;
 using System;
 using System.Collections.Generic;
 
@@ -32,7 +32,6 @@ namespace Amplius.Data.Properties
 
             return tokens;
         }
-
         public Token Lex()
         {
             start = position;
@@ -84,9 +83,9 @@ namespace Amplius.Data.Properties
                     else
                     {
                         var span = new TextSpan(start, 1);
-                        var loc = new TextLocation(input, span);
+                        var piece = new TextPiece(input, span);
 
-                        Error("Bad token or character", loc);
+                        Error("Bad token or character", piece);
                         position++;
                     }
                     break;
@@ -126,7 +125,6 @@ namespace Amplius.Data.Properties
                 }
             }
         }
-
         private void ReadString()
         {
             position++;
@@ -142,9 +140,9 @@ namespace Amplius.Data.Properties
                     case '\r':
                     case '\n':
                         var span = new TextSpan(start, 1);
-                        var loc = new TextLocation(input, span);
+                        var piece = new TextPiece(input, span);
 
-                        Error("Unterminated string", loc);
+                        Error("Unterminated string", piece);
                         done = true;
                         break;
                     case '"':
@@ -169,7 +167,6 @@ namespace Amplius.Data.Properties
             type = TokenType.STRING;
             value = sb;
         }
-
         private void ReadNumber()
         {
             var start = position;
@@ -185,15 +182,14 @@ namespace Amplius.Data.Properties
             if (!val.HasValue)
             {
                 var span = new TextSpan(start, position);
-                var loc = new TextLocation(input, span);
+                var piece = new TextPiece(input, span);
 
-                Error("Invalid number", loc);
+                Error("Invalid number", piece);
             }
 
             value = val;
             type = TokenType.NUMBER;
         }
-
         private void ReadArray()
         {
             position++;
@@ -227,7 +223,6 @@ namespace Amplius.Data.Properties
             type = TokenType.ARRAY;
             value = values;
         }
-
         private void ReadIdOrKeyword()
         {
             while (char.IsLetterOrDigit(current)) position++;
@@ -235,7 +230,6 @@ namespace Amplius.Data.Properties
             var t = input.Slice(start, position);
             type = GetKeywordKind(t);
         }
-
         private void ReadWhiteSpace()
         {
             while (char.IsWhiteSpace(current)) position++;
@@ -250,7 +244,6 @@ namespace Amplius.Data.Properties
 
             return input[index];
         }
-
         private static TokenType GetKeywordKind(string input)
         {
             var lowercase = input.ToLower();
@@ -266,6 +259,6 @@ namespace Amplius.Data.Properties
             }
         }
 
-        private void Error(string message, TextLocation location) => Console.WriteLine($"Properties: Lexer Error - {{Message: {message}, Location: {location.Span.ToString()}}}");
+        private void Error(string message, TextPiece piece) => Console.WriteLine($"Properties: Lexer Error - {{Message: {message}, Location: {piece.Span}}}");
     }
 }

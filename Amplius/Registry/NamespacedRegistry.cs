@@ -1,4 +1,7 @@
-﻿/// <license>
+﻿
+using Amplius.Utils;
+using System.Collections.Generic;
+/// <license>
 /// MIT License
 /// 
 /// Copyright(c) 2020 RuthlessBoi
@@ -24,8 +27,12 @@
 namespace Amplius.Registry
 {
     /// <summary>
-    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="string"/> for the key and <typeparamref name="V"/> as the value type.
+    /// Defines a generic <see cref="Registry{K, V}"/>; uses a <see cref="NamespaceKey"/> for the key and <typeparamref name="V"/> as the value type.
     /// </summary>
     /// <typeparam name="V">Type to register</typeparam>
-    public sealed class GenericRegistry<V> : Registry<string, V> { }
+    public sealed class NamespacedRegistry<V> : Registry<NamespaceKey, V>
+    {
+        public static KeyValuePair<NamespaceKey, V> StringToNamespaceKey(KeyValuePair<string, V> pair) => new KeyValuePair<NamespaceKey, V>(NamespaceKey.From(pair.Key), pair.Value);
+        public static KeyValuePair<string, V> NamespaceKeyToString(KeyValuePair<NamespaceKey, V> pair) => new KeyValuePair<string, V>(pair.Key.FullKey, pair.Value);
+    }
 }

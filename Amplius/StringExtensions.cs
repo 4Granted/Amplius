@@ -34,6 +34,9 @@ namespace Amplius
     {
         public static string Slice(this string self, int start, int end)
         {
+            if (start > self.Length)
+                throw new ArgumentOutOfRangeException("start", "The 'start' parameter of string.Slice cannot be larger than the base string");
+
             if (end < 0) end = self.Length + end;
             int len = end - start;
             return self.Substring(start, len);
